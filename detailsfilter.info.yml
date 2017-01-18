@@ -1,0 +1,5 @@
+name: detailsfilter
+type: module
+description: Provides a details text filter.
+core: 8.x
+package: clever-systems.net
