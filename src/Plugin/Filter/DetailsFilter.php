@@ -3,6 +3,7 @@
 namespace Drupal\detailsfilter\Plugin\Filter;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterInterface;
 use Drupal\filter\Plugin\FilterBase;
 
@@ -21,7 +22,7 @@ class DetailsFilter extends FilterBase implements  FilterInterface {
       */
       public function process($text, $langcode) {
         $pattern = '#[[]details(?<open> +open)? *(: *(?<subject>.*?))?](?<text>.*?)[[]/details]#usm';
-        $result = new FilterProcessResultShim('');
+        $result = new FilterProcessResult('');
         $callback = function ($matches) use ($result) {
           $render = [
             '#type' => 'details',
@@ -35,7 +36,9 @@ class DetailsFilter extends FilterBase implements  FilterInterface {
           }
 
           $return = render($render);
-          $result->addAttachmentsFromRenderArray($render);
+          // Rendering will always populate this and all attachments will bubble
+          // up to the top level.
+          $result->addAttachments($render['#attached']);
           return $return;
         };
         $new_text = preg_replace_callback($pattern, $callback, $text);
