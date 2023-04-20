@@ -10,8 +10,8 @@ use Drupal\filter\Plugin\FilterBase;
 /**
  * @Filter(
  *  id = "detailsfilter",
- *  title = @Translation("Details Filter."),
- *  description = @Translation("Provides a filter [details open: Name] Text...[/details]."),
+ *  title = @Translation("Details tags"),
+ *  description = @Translation("Renders <code>[details open: Title] Text... [/details]</code> into collapsible <a href='https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details'><code>&lt;details&gt;</code> elements</a>. <code>open</code> is optional and makes the <code>&lt;details&gt;</code> expanded initially if specified. <code>Title</code> is optional and will output text after the <code>:</code> as the contents of the <code>&lt;summary&gt;</code> element if specified."),
  *  type = Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE,
  * )
  */
