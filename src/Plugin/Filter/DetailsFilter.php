@@ -20,7 +20,7 @@ class DetailsFilter extends FilterBase implements FilterInterface {
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-    $pattern = '#[[]details(?<open> +open)? *(: *(?<subject>.*?))?](?<text>.*?)[[]/details]#usm';
+    $pattern = '#[[]details(?<open> +open)? *(: *(?<title>.*?))?](?<text>.*?)[[]/details]#usm';
     $result = new FilterProcessResult('');
     $callback = function ($matches) use ($result) {
       $render = [
