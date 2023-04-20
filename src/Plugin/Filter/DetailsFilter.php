@@ -3,9 +3,12 @@
 namespace Drupal\detailsfilter\Plugin\Filter;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterInterface;
 use Drupal\filter\Plugin\FilterBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @Filter(
@@ -15,7 +18,43 @@ use Drupal\filter\Plugin\FilterBase;
  *  type = Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE,
  * )
  */
-class DetailsFilter extends FilterBase implements FilterInterface {
+class DetailsFilter extends FilterBase implements FilterInterface, ContainerFactoryPluginInterface {
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service.
+   */
+  public function __construct(
+    array $configuration, $plugin_id, $plugin_definition,
+    RendererInterface $renderer
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration, $plugin_id, $plugin_definition
+  ) {
+    return new static(
+      $configuration, $plugin_id, $plugin_definition,
+      $container->get('renderer')
+    );
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -34,7 +73,7 @@ class DetailsFilter extends FilterBase implements FilterInterface {
         $render['#title'] = $matches['title'];
       }
 
-      $return = render($render);
+      $return = $this->renderer->render($render);
       // Rendering will always populate this and all attachments will bubble
       // up to the top level.
       $result->addAttachments($render['#attached']);
