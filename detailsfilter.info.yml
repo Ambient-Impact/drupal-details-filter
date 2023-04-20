@@ -1,5 +1,5 @@
 name: Details Filter
 type: module
 description: Provides a details text filter.
-core_version_requirement: ^8.7.7 || ^9
+core_version_requirement: ^9.3 || ^10
 package: Text filter
